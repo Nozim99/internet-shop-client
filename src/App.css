@@ -225,3 +225,105 @@
 .cart-products {
   min-height: calc(100vh - 13.6rem);
 }
+
+/* Server Nod Found 404 */
+.not_found {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.not_found_body {
+  display: flex;
+  font-size: 5em;
+  position: relative;
+  justify-content: space-between;
+  width: 4.3em;
+}
+
+.not_found_body svg {
+  position: absolute;
+  font-size: 1.3em;
+}
+
+.not_found_gear {
+  top: 0.6em;
+  left: 0.75em;
+  color: #0d84c8;
+  animation: not_found_animated2 4s linear infinite;
+}
+
+.not_found_gear2 {
+  top: 0.2em;
+  right: 0.75em;
+  color: #00b906;
+  animation: not_found_animated 4s linear infinite;
+  animation-delay: -400ms;
+}
+
+.not_found h2 {
+  font-size: 2.2em;
+}
+
+.not_found_body h1 {
+  font-size: 7rem;
+  font-weight: medium;
+}
+
+
+@keyframes not_found_animated {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes not_found_animated2 {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .server_error {
+    font-size: 4em;
+  }
+}
+
+@media (max-width: 526px) {
+  .server_error {
+    font-size: 3em;
+  }
+}
+
+@media (max-width: 425px) {
+  .not_found {
+    font-size: 13px;
+  }
+
+  .server_error {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 360px) {
+  .not_found {
+    font-size: 10px;
+  }
+
+  .server_error {
+    font-size: 2.3em;
+  }
+  .not_found_body h1{
+    font-size: 5rem;
+  }
+}

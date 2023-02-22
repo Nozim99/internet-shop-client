@@ -10,6 +10,7 @@ import LikeProducts from './components/products/LikeProducts'
 import CartProducts from './components/products/CartProducts'
 import 'react-toastify/dist/ReactToastify.css';
 import MyProducts from './components/products/MyProducts'
+import PageNotFound from './components/extra/PageNotFound'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path='/like/products' element={<LikeProducts />} />
         <Route path='/cart/products' element={<CartProducts />} />
         <Route path='/my/products' element={<MyProducts />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
       <Footer />
     </div>

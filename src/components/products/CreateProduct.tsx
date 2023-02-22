@@ -206,8 +206,8 @@ export default function CreateProduct() {
             </div>
           )) : ""
         }
-        <button onClick={addCharater} type='button' className='bg-blue-500 text-white w-80 py-1 mb-5 hover:bg-blue-600'><FontAwesomeIcon icon={faPlus} /> Harakteristika qo'shish</button>
-        <button type='submit' className={'block mt-5 text-white w-full py-1 mb-16 hover:bg-green-500 ' + (load ? "bg-green-700 pointer-events-none" : "bg-green-600")}>Mahsulot yaratish {load ? <FontAwesomeIcon className='circle_animate ml-1' icon={faSpinner} /> : ""} </button>
+        <button onClick={addCharater} type='button' className='bg-blue-500 text-white w-80 py-1 mb-5 hover:bg-blue-600 max-sm:w-60 max-sm:ml-1'><FontAwesomeIcon icon={faPlus} /> Harakteristika qo'shish</button>
+        <button type='submit' className={'block mt-5 text-white w-full py-1 mb-16 hover:bg-green-500 max-sm:w-11/12 max-sm:mx-auto ' + (load ? "bg-green-700 pointer-events-none" : "bg-green-600")}>Mahsulot yaratish {load ? <FontAwesomeIcon className='circle_animate ml-1' icon={faSpinner} /> : ""} </button>
       </form>
     </div>
   )

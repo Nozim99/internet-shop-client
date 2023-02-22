@@ -16,10 +16,6 @@ export interface Data {
   name: string,
   price: number,
   images: string[],
-  // rate?: {
-  //   rateBy: string,
-  //   point: string
-  // }[],
   rate: number,
   category: "Motherboard" | "processor" | "Ram" | "Videocard" | "Memory" | "Power",
   like: string[],
@@ -80,7 +76,7 @@ export default function Product() {
         }, { headers: { Authorization: `Bearer ${token}` } })
           .then(result => {
             setCommentLoad(false)
-            setData(result.data)
+            setFetch(result.data, setData)
             setComment("")
             setRate(0)
           })
@@ -186,17 +182,29 @@ export default function Product() {
         id: data._id,
         amount: amount
       }, { headers: { Authorization: `Bearer ${token}` } })
-        .then(result => { setData(result.data); setBuyLoad(false); setAmount(1) })
+        .then(result => { setFetch(result.data, setData); setBuyLoad(false); setAmount(1) })
         .catch(error => { console.error(error); setBuyLoad(false) })
     }
   }
 
+  const setFetch = (n: Data, m: React.Dispatch<React.SetStateAction<Data | undefined>>) => {
+    const newData = n
+    let num = 0;
+    if (newData.comments && newData.comments.length) {
+      for (let i = 0; i < newData.comments.length; i++) {
+        num += newData.comments[i].rate
+      }
+      num = Number((num / newData.comments.length).toFixed(1))
+    }
+    newData.rate = num
+    m(newData)
+  }
 
   useEffect(() => {
     if (id) {
       axios.get(URLS.start + URLS.getProductById + id)
         .then(result => {
-          setData(result.data)
+          setFetch(result.data, setData)
         })
         .catch(err => {
           console.error(err)
@@ -230,15 +238,15 @@ export default function Product() {
     <div className='container mx-auto min_height mb-20'>
       {/* Mahsulot nomi */}
       <h1 className='mt-5 text-2xl font-semibold mx-5'>{data?.name}</h1>
-      <div className='mt-5 flex justify-between mx-5'>
+      <div className='mt-5 flex justify-between mx-5 max-sm:flex-col'>
         {/* Mahsulot rasmi */}
-        <div className='w-72 h-72 relative border-2 border-gray-300'>
+        <div className='w-72 h-72 relative border-2 border-gray-300 max-sm:mx-auto max-sm:w-80 max-sm:h-80'>
           <div className='absolute center_box object-cover product_img img_loader'>
             <img className='object-cover w-full h-full' src={data?.images[0]} />
           </div>
         </div>
         {/* Mahsulotni sotib olish bo'limi */}
-        <div className='ml-20 border-2 border-gray-300 px-6 py-3 w-80 mr-96'>
+        <div className='ml-20 border-2 border-gray-300 px-6 py-3 w-80 mr-96 max-xl:w-auto max-xl:mr-0 max-md:ml-0 max-sm:w-80 max-sm:mx-auto max-sm:mt-5'>
           <div className='text-3xl font-semibold'>{data?.price.toLocaleString("ru-RU")} so'm</div>
           <div className='flex items-center mt-5'>
             <input onChange={(e) => changeAmount(Number(e.target.value))} value={amount} className='outline-none border-2 border-gray-400 px-1 py-0.5 w-16 text-xl rounded font-bold' type="number" min={1} />
@@ -249,24 +257,14 @@ export default function Product() {
                   : <FontAwesomeIcon onClick={likeProduct} className='mx-5 text-3xl cursor-pointer text-gray-800 hover:text-red-500' icon={faHeart} />) :
                   <FontAwesomeIcon onClick={likeProduct} className='mx-5 text-3xl cursor-pointer text-gray-800 hover:text-red-500' icon={faHeart} />
             }
-
-            {/* {
-              cartLoad ? <FontAwesomeIcon className='text-2xl cursor-pointer load-cart' icon={faCartPlus} /> :
-                user ? (user.cart.includes(data._id)
-                  ? <FontAwesomeIcon onClick={removeFromCart} className='text-2xl cursor-pointer text-green-600' icon={faCartPlus} />
-                  : <FontAwesomeIcon onClick={addToCart} className='text-2xl cursor-pointer text-gray-800 hover:text-green-600' icon={faCartPlus} />
-                )
-                  : <FontAwesomeIcon onClick={addToCart} className='text-2xl cursor-pointer text-gray-800 hover:text-green-600' icon={faCartPlus} />
-            } */}
-
           </div>
           <div className='mt-4 flex items-center'>
-            <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />
-            <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={solidStar} />
-            <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />
-            <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} />
-            <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />
-            <div className='ml-3 flex items-center'><span className='text-lg font-medium'>{data?.comments.length || 0}</span> <FontAwesomeIcon className='text-sm ml-1 text-gray-600' icon={faUser} /></div>
+            {data.rate > 0 ? (data.rate < 0.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 1 ? (data.rate < 1.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 2 ? (data.rate < 2.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 3 ? (data.rate < 3.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 4 ? (data.rate < 4.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            <div className='ml-1 flex items-center'><span className='text-lg font-medium'>{data.rate}</span></div>
           </div>
           <div className='flex mt-3'>
             <div className=' text-sm'>
@@ -284,25 +282,13 @@ export default function Product() {
           </div>
           <button onClick={buyProduct} className={'mt-6 text-white tracking-wider font-semibold w-full py-1 rounded hover:bg-green-500 ' + (buyLoad ? "pointer-events-none bg-green-700 " : "bg-green-600 ") + ((!data.amount || !token) ? "pointer-events-none" : "")}>Sotib olish {buyLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""} </button>
         </div>
-        {/* Tavsiya beriladigan mahsulotlar */}
-        {/* <div className='w-96 h-72'>
-          <div className='flex items-center border-2 border-gray-300 cursor-pointer hover:bg-gray-100'>
-            <div className='w-20 h-20 mr-4 m-1'>
-              <img className='w-full h-full' src="https://upg.uz/storage/files/products/1269/original/fQKnIvIo6TIlvI0DDTf1bjVhUYVDUDjcuk97wHGL.jpg" alt="" />
-            </div>
-            <div>
-              <div>Сборка #2 |10400F/2060S/16GB/250GB New</div>
-              <div className='font-semibold text-lg'>7 718 000 so'm</div>
-            </div>
-          </div>
-        </div> */}
-        <div className='w-80'></div>
+        <div className='w-80 max-lg:w-0 max-md:hidden'></div>
       </div>
       {/* Mahsulot haqida */}
       <div className='mt-10 flex border-b border-gray-400 mx-5'>
-        <div style={{ top: "0.04rem" }} onClick={() => setInfo("description")} className={info === "description" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "description" ? 'absolute center_box' : 'absolute center_box underline'}>Tavsif</span></div>
-        <div style={{ top: "0.04rem" }} onClick={() => setInfo("characteristics")} className={info === "characteristics" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "characteristics" ? 'absolute center_box' : 'absolute center_box underline'}>Xususiyatlari</span></div>
-        <div style={{ top: "0.04rem" }} onClick={() => setInfo("comments")} className={info === "comments" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "comments" ? 'absolute center_box' : 'absolute center_box underline'}>Izohlar</span></div>
+        <div style={{ top: "0.04rem" }} onClick={() => setInfo("description")} className={info === "description" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default max-sm:text-sm' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "description" ? 'absolute center_box' : 'absolute center_box underline'}>Tavsif</span></div>
+        <div style={{ top: "0.04rem" }} onClick={() => setInfo("characteristics")} className={info === "characteristics" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default max-sm:text-sm' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "characteristics" ? 'absolute center_box' : 'absolute center_box underline'}>Xususiyatlari</span></div>
+        <div style={{ top: "0.04rem" }} onClick={() => setInfo("comments")} className={info === "comments" ? 'border w-36 h-10 py-1.5 border-gray-400 border-b-0 bg-white relative rounded-t font-semibold tracking-wide text-lg cursor-default max-sm:text-sm' : "w-36 py-1.5 relative h-10 tracking-wide hover:bg-gray-200/60 cursor-pointer"}><span className={info === "comments" ? 'absolute center_box' : 'absolute center_box underline'}>Izohlar</span></div>
       </div>
       {
         // Description
@@ -320,7 +306,7 @@ export default function Product() {
           data?.character ? data.character.length ? (
             <ul className='mx-5 mt-3 info_ul cursor-default border'>
               {data?.character?.map((item, index) => (
-                <li key={index} className='px-3 py-1'><span className='w-3/12 inline-block font-semibold'>{item.name}</span> <span>{item.desc}</span></li>
+                <li key={index} className='px-3 py-1'><span className='w-3/6 inline-block font-semibold'>{item.name}</span> <span>{item.desc}</span></li>
               ))}
             </ul>
           ) : <h3 className='text-3xl text-center text-gray-700 mt-6'>Xususiyat ma'lumotlari mavjud emas</h3> : <h3 className='text-3xl text-center text-gray-700 mt-6'>Xususiyat ma'lumotlari mavjud emas</h3>
@@ -341,7 +327,7 @@ export default function Product() {
                   <li className='cursor-pointer'>{rate >= 5 ? <FontAwesomeIcon onClick={() => setRate(5)} onMouseEnter={() => setRateHover(5)} icon={solidStar} className='text-orange-500' /> : (rateHover >= 5 ? <FontAwesomeIcon onClick={() => setRate(5)} onMouseEnter={() => setRateHover(5)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onMouseEnter={() => setRateHover(5)} icon={faStar} className='text-gray-600' />)}</li>
                 </ul>
               </div>
-              <textarea style={{ minHeight: "5rem" }} value={comment} onChange={addComment} className='border border-gray-400 w-8/12 outline-none px-2 overflow-clip' placeholder='Izoh qoldiring'></textarea>
+              <textarea style={{ minHeight: "5rem" }} value={comment} onChange={addComment} className='border border-gray-400 w-8/12 outline-none px-2 overflow-clip max-sm:w-full' placeholder='Izoh qoldiring'></textarea>
               <div>
                 <button onClick={sendComment} className={'text-white px-16 py-1 mt-5 hover:bg-green-600 ' + (commentLoad ? "bg-green-700 pointer-events-none" : "bg-green-500")}>Komment qoldirish {commentLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
               </div>
