@@ -1,6 +1,7 @@
 export const URLS = {
   // Start
-  start: "http://localhost:5000/",
+  // start: "http://localhost:5000/",
+  start: "https://us-central1-online-shop-1ff97.cloudfunctions.net/app/",
 
   // Auth
   signin: "auth/signin",
