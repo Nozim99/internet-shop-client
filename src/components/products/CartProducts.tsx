@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { useNavigate } from 'react-router-dom'
-import { Data } from './LikeProducts'
+import { Data } from './Product'
 import { faStar } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
