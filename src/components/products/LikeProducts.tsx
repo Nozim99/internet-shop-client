@@ -57,7 +57,7 @@ export default function LikeProducts() {
                 !data ? <Loader /> :
                     <div className='mt-10'>
                         {
-                            data.map((item, index) => (
+                            data.slice().reverse().map((item, index) => (
                                 <div onClick={() => navigate(`/product/byId/${item._id}`)} className='flex mb-5 cursor-pointer overflow-hidden' key={index}>
                                     <div className='w-32 h-32 overflow-hidden img_loader border m-0.5'><img className='w-full h-full object-cover bg-gray-200' src={item.images[0]} /></div>
                                     <div className='ml-4 max-lg:w-10/12'>

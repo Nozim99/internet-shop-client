@@ -15,27 +15,27 @@ export default function MyProducts() {
   const { token } = useSelector((state: RootState) => state.config)
   const [data, setData] = useState<Data[]>()
   const [rate, setRate] = useState(0)
-  const [deleteLoad, setDeleteLoad] = useState(false)
+  const [deleteLoad, setDeleteLoad] = useState("")
   const [amount, setAmount] = useState(1)
-  const [increaseLoad, setIncreaseLoad] = useState(false)
+  const [increaseLoad, setIncreaseLoad] = useState("")
 
   const deleteGroup = (id: string) => {
-    setDeleteLoad(true)
+    setDeleteLoad(id)
     axios.delete(URLS.start + URLS.deleteGroup + id, { headers: { Authorization: `Bearer ${token}` } })
       .then(result => {
-        setDeleteLoad(false)
+        setDeleteLoad("")
         setData(result.data)
       }).catch(error => {
-        setDeleteLoad(false)
+        setDeleteLoad("")
         Toast.error("Guruh o'chirilmadi")
         console.error(error)
       })
   }
   const increaseAmount = (id: string) => {
-    setIncreaseLoad(true)
+    setIncreaseLoad(id)
     axios.post(URLS.start + URLS.increaseAmountOfProduct, { amount, groupId: id }, { headers: { Authorization: `Bearer ${token}` } })
-      .then(result => { setData(result.data); setIncreaseLoad(false) })
-      .catch(error => { console.error(error); setIncreaseLoad(false) })
+      .then(result => { setData(result.data); setIncreaseLoad("") })
+      .catch(error => { console.error(error); setIncreaseLoad("") })
   }
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function MyProducts() {
           <div>
             {
               data.length ?
-                data.map((item, index) => (
+                data.slice().reverse().map((item, index) => (
                   <div key={index} className='flex mb-10'>
                     <div className='w-32 h-32 img_loader'><img className='w-full h-full object-cover' src={item.images[0]} alt="" /></div>
                     <div className='ml-4 w-5/6'>
@@ -82,10 +82,10 @@ export default function MyProducts() {
                         <div className='flex items-center'>
                           <span className='mr-2 max-md:mr-0 max-md:w-20'>Mahsulot qo'shish</span>
                           <input onChange={(e) => setAmount(Number(e.target.value))} value={amount} min={1} type="number" className='w-20 outline-none px-2 text-lg border border-gray-400 font-bold' /> <span className='border border-gray-400 border-l-0 text-lg px-1.5'>ta</span>
-                          <button onClick={() => increaseAmount(item._id)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
-                          <button onClick={() => deleteGroup(item._id)} className={'px-3 ml-5 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 hidden max-sm:inline-block ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}><FontAwesomeIcon icon={faTrash} /> {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                          <button onClick={() => increaseAmount(item._id)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad === item._id ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                          <button onClick={() => deleteGroup(item._id)} className={'px-3 ml-5 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 hidden max-sm:inline-block ' + (deleteLoad === item._id ? "bg-red-700 pointer-events-none" : "bg-red-500")}><FontAwesomeIcon icon={faTrash} /> {deleteLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
                         </div>
-                        <button onClick={() => deleteGroup(item._id)} className={'px-3 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 max-sm:hidden ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}>Mahsulotni o'chirish {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                        <button onClick={() => deleteGroup(item._id)} className={'px-3 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 max-sm:hidden ' + (deleteLoad === item._id ? "bg-red-700 pointer-events-none" : "bg-red-500")}>Mahsulotni o'chirish {deleteLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
                       </div>
                     </div>
                   </div>
