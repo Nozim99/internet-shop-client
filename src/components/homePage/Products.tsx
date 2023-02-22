@@ -27,14 +27,14 @@ interface Data {
     }[],
     bought: number,
     amount: number,
-    rate?: {
-      rateBy: string,
-      point: number
-    }[],
+    rate: number,
     createdAt: Date,
-    comments?: {
+    comments: {
       commentBy: string,
-      comment: string
+      comment: string,
+      rate: number,
+      _id: string,
+      createdAt: Date
     }[],
     __v: number
   }[]
@@ -72,7 +72,7 @@ export default function Products() {
     setSkip(1)
     setData(undefined)
     if (category) {
-      axios.get(URLS.start + URLS.getProductByCategory + `?category=${category}&limit=20`)
+      axios.get(URLS.start + URLS.getProductByCategory + `?category=${category}&limit=100`)
         .then(result => {
           setData(result.data)
         })
@@ -83,6 +83,15 @@ export default function Products() {
       axios.get(URLS.start + URLS.getProducts + `?limit=20`)
         .then(result => {
           setData(result.data)
+          const newData: Data = result.data
+          for (let i = 0; i < newData.data.length; i++) {
+            let num = 0;
+            for (let j = 0; j < newData.data[i].comments.length; j++) {
+              num += newData.data[i].comments[j].rate
+            }
+            num = Number((num / newData.data[i].comments.length).toFixed(1))
+            newData.data[i].rate = num || 0
+          }
         })
         .catch(err => {
           console.error(err)
@@ -101,19 +110,19 @@ export default function Products() {
       <div className="grid grid-cols-5 ml-5">
         {
           data.data.map((item, index) => (
-            <div key={index} onClick={() => navigate("/product/byId/" + item._id)} className="w-48 mb-8 products mx-3 bg-white/70 pt-1.5 px-1.5 border-2 product_shadow max-lg:w-36 cursor-pointer">
-              <div className='h-32 img_loader overflow-hidden'>
+            <div key={index} onClick={() => navigate("/product/byId/" + item._id)} className="w-48 mb-8 products mx-3 bg-white/70 pt-1.5 px-1.5 border-2 product_shadow max-lg:w-36 cursor-pointer max-sm:w-28 max-sm:h-52">
+              <div className='h-32 img_loader overflow-hidden max-sm:h-24'>
                 <img className="w-100 h-100 mx-auto bg-gray-200 object-cover" src={item.images[0]} alt="" />
               </div>
-              <p className="mt-3 overflow-hidden whitespace-pre-line h-12">{item.name}</p>
-              <div className='flex justify-between mt-1 pr-1'>
+              <p className="mt-3 overflow-hidden whitespace-pre-line h-12 max-sm:text-sm max-sm:h-10">{item.name}</p>
+              <div className='flex justify-between mt-1 pr-1 max-sm:text-sm'>
                 <div className='flex items-center'>
-                  <FontAwesomeIcon className='text-[#CC290A] text-sm mr-1.5' icon={solidStar} />
-                  <span className='mr-3'>4,6</span>
+                  <FontAwesomeIcon className='text-[#CC290A] text-sm mr-1.5 max-sm:mr-0.5 max-sm:text-xs' icon={solidStar} />
+                  <span className='mr-3 max-sm:text-xs'>{item.rate || 0}</span>
                 </div>
-                <div><span>{item.bought}</span> sotildi</div>
+                <div className='max-sm:text-xs'><span>{item.bought}</span> sotildi</div>
               </div>
-              <div className='mt-3 font-bold text-lg overflow-hidden whitespace-nowrap'>{item.price.toLocaleString("ru-RU")} so'm</div>
+              <div className='mt-3 font-bold text-lg overflow-hidden whitespace-nowrap max-sm:mt-1 max-sm:text-xs'>{item.price.toLocaleString("ru-RU")} so'm</div>
             </div>
           ))
         }

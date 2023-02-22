@@ -58,8 +58,8 @@ export default function Navbar() {
               </div> : ""
             }
           </div> : <>
-            <button onClick={() => dispatch(setSignUp(true))} className='underline text-slate-500 hover:text-black font-semibold mr-5'>Ro'yhatdan o'tish</button>
-            <button onClick={() => dispatch(setSignIn(true))} className='underline text-slate-500 hover:text-black font-semibold'>Kirish</button>
+            <button onClick={() => dispatch(setSignUp(true))} className='underline text-slate-500 hover:text-black font-semibold mr-5 max-sm:text-sm'>Ro'yhatdan o'tish</button>
+            <button onClick={() => dispatch(setSignIn(true))} className='underline text-slate-500 hover:text-black font-semibold max-sm:text-sm'>Kirish</button>
           </>}
         </div>
       </div>
