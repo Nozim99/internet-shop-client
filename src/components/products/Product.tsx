@@ -231,7 +231,7 @@ export default function Product() {
   }, [token])
 
   if (!data) {
-    return <Loader />
+    return <div style={{ minHeight: "calc(100vh - 13.6rem)" }}><Loader /></div>
   }
 
   return (

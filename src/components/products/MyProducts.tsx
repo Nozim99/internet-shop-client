@@ -58,40 +58,42 @@ export default function MyProducts() {
       })
   }, [])
 
-  if (!data) return <Loader />
   return (
     <div style={{ minHeight: "calc(100vh - 13.6rem)" }} className='container mx-auto'>
       <h3 className='text-3xl font-bold my-5 max-md:text-2xl'>Yaratilgan mahsulotlar</h3>
-      <div>
-        {
-          data.length ?
-            data.map((item, index) => (
-              <div key={index} className='flex mb-10'>
-                <div className='w-32 h-32 img_loader'><img className='w-full h-full object-cover' src={item.images[0]} alt="" /></div>
-                <div className='ml-4 w-5/6'>
-                  <div className='h-12 overflow-hidden'><span onClick={() => navigate("/product/byId/" + item._id)} className='hover:underline cursor-pointer'>{item.name}</span></div>
-                  <div className='mt-2 flex items-center'>
-                    <FontAwesomeIcon className='text-lg text-orange-600 mr-1' icon={faStar} />
-                    <span className='font-medium mr-4'>{item.rate}</span>
-                    <span className='mr-1 text-gray-600'>sotildi: </span> <span>{item.bought}</span>
-                    <span className='ml-4 mr-1 text-gray-600'>mavjud: </span> <span>{item.amount}</span>
-                    <span className='ml-4 mr-1 text-gray-600'>comment: </span> <span>{item.comments.length}</span>
-                  </div>
-                  <div className='flex justify-between mt-3 max-md:text-sm max-md:items-center'>
-                    <div className='flex items-center'>
-                      <span className='mr-2 max-md:mr-0 max-md:w-20'>Mahsulot qo'shish</span>
-                      <input onChange={(e) => setAmount(Number(e.target.value))} value={amount} min={1} type="number" className='w-20 outline-none px-2 text-lg border border-gray-400 font-bold' /> <span className='border border-gray-400 border-l-0 text-lg px-1.5'>ta</span>
-                      <button onClick={() => increaseAmount(item._id)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
-                      <button onClick={() => deleteGroup(item._id)} className={'px-3 ml-5 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 hidden max-sm:inline-block ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}><FontAwesomeIcon icon={faTrash} /> {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+      {
+        !data ? <Loader /> :
+          <div>
+            {
+              data.length ?
+                data.map((item, index) => (
+                  <div key={index} className='flex mb-10'>
+                    <div className='w-32 h-32 img_loader'><img className='w-full h-full object-cover' src={item.images[0]} alt="" /></div>
+                    <div className='ml-4 w-5/6'>
+                      <div className='h-12 overflow-hidden'><span onClick={() => navigate("/product/byId/" + item._id)} className='hover:underline cursor-pointer'>{item.name}</span></div>
+                      <div className='mt-2 flex items-center'>
+                        <FontAwesomeIcon className='text-lg text-orange-600 mr-1' icon={faStar} />
+                        <span className='font-medium mr-4'>{item.rate}</span>
+                        <span className='mr-1 text-gray-600'>sotildi: </span> <span>{item.bought}</span>
+                        <span className='ml-4 mr-1 text-gray-600'>mavjud: </span> <span>{item.amount}</span>
+                        <span className='ml-4 mr-1 text-gray-600'>comment: </span> <span>{item.comments.length}</span>
+                      </div>
+                      <div className='flex justify-between mt-3 max-md:text-sm max-md:items-center'>
+                        <div className='flex items-center'>
+                          <span className='mr-2 max-md:mr-0 max-md:w-20'>Mahsulot qo'shish</span>
+                          <input onChange={(e) => setAmount(Number(e.target.value))} value={amount} min={1} type="number" className='w-20 outline-none px-2 text-lg border border-gray-400 font-bold' /> <span className='border border-gray-400 border-l-0 text-lg px-1.5'>ta</span>
+                          <button onClick={() => increaseAmount(item._id)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                          <button onClick={() => deleteGroup(item._id)} className={'px-3 ml-5 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 hidden max-sm:inline-block ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}><FontAwesomeIcon icon={faTrash} /> {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                        </div>
+                        <button onClick={() => deleteGroup(item._id)} className={'px-3 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 max-sm:hidden ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}>Mahsulotni o'chirish {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                      </div>
                     </div>
-                    <button onClick={() => deleteGroup(item._id)} className={'px-3 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 max-sm:hidden ' + (deleteLoad ? "bg-red-700 pointer-events-none" : "bg-red-500")}>Mahsulotni o'chirish {deleteLoad ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>                    
                   </div>
-                </div>
-              </div>
-            ))
-            : <h3 className='text-center text-3xl font-bold text-gray-700'>Mahsulot mavjud emas!</h3>
-        }
-      </div>
+                ))
+                : <h3 className='text-center text-3xl font-bold text-gray-700'>Mahsulot mavjud emas!</h3>
+            }
+          </div>
+      }
     </div>
   )
 }
