@@ -107,10 +107,10 @@ export default function Products() {
 
   return (
     <div className='w-full'>
-      <div className="grid grid-cols-5 ml-5">
+      <div className="grid grid-cols-5 ml-5 max-xl:grid-cols-4 max-lg:grid-cols-3 max-md:block">
         {
           data.data.map((item, index) => (
-            <div key={index} onClick={() => navigate("/product/byId/" + item._id)} className="w-48 mb-8 products mx-3 bg-white/70 pt-1.5 px-1.5 border-2 product_shadow max-lg:w-36 cursor-pointer max-sm:w-28 max-sm:h-52">
+            <div key={index} onClick={() => navigate("/product/byId/" + item._id)} className="w-48 mb-8 products mx-3 bg-white/70 pt-1.5 px-1.5 border-2 product_shadow max-lg:w-36 cursor-pointer max-sm:w-28 max-sm:h-52 max-md:inline-block">
               <div className='h-32 img_loader overflow-hidden max-sm:h-24'>
                 <img className="w-100 h-100 mx-auto bg-gray-200 object-cover" src={item.images[0]} alt="" />
               </div>
@@ -120,7 +120,7 @@ export default function Products() {
                   <FontAwesomeIcon className='text-[#CC290A] text-sm mr-1.5 max-sm:mr-0.5 max-sm:text-xs' icon={solidStar} />
                   <span className='mr-3 max-sm:text-xs'>{item.rate || 0}</span>
                 </div>
-                <div className='max-sm:text-xs'><span>{item.bought}</span> sotildi</div>
+                <div className='max-sm:text-xs overflow-hidden whitespace-nowrap'><span>{item.bought}</span> sotildi</div>
               </div>
               <div className='mt-3 font-bold text-lg overflow-hidden whitespace-nowrap max-sm:mt-1 max-sm:text-xs'>{item.price.toLocaleString("ru-RU")} so'm</div>
             </div>
