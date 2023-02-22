@@ -13,6 +13,7 @@ Ushbu sahifada istalgan foydalanuvchi mahsuot qo'shaoladi
 8. expressjs
 9. mongodb
 
+Sahifada quyidagilar mavjud(asosiylari)
 1. Ro'yhatdan o'tish & akkountga kirish (jwt)
 2. Mahsulotlarni sotib olish & yaratish & o'chirish
 3. Mahsulotga komment yozish
