@@ -319,7 +319,15 @@ export default function Product() {
             {/* Add comment */}
             <div className='mx-5 mt-8'>
               <div>
-                <ul onMouseLeave={() => setRateHover(0)} className='flex text-xl mb-3 w-36'>
+                <ul onMouseLeave={() => setRateHover(0)} className='flex text-xl mb-3 w-36 hidden max-lg:flex'>
+                  <li className='cursor-pointer'>{rate >= 1 ? <FontAwesomeIcon onClick={() => setRate(1)} onMouseEnter={() => setRateHover(1)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onClick={() => setRate(1)} icon={faStar} className='cursor-pointer text-gray-600' />}</li>
+                  <li className='mx-2 cursor-pointer'>{rate >= 2 ? <FontAwesomeIcon onClick={() => setRate(2)} onMouseEnter={() => setRateHover(2)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onClick={() => setRate(2)} className='text-gray-600' icon={faStar} />}</li>
+                  <li className='cursor-pointer'>{rate >= 3 ? <FontAwesomeIcon onClick={() => setRate(3)} onMouseEnter={() => setRateHover(3)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onClick={() => setRate(3)} icon={faStar} className='text-gray-600' />}</li>
+                  <li className='mx-2 cursor-pointer'>{rate >= 4 ? <FontAwesomeIcon onClick={() => setRate(4)} onMouseEnter={() => setRateHover(4)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onClick={() => setRate(4)} className='text-gray-600' icon={faStar} />}</li>
+                  <li className='cursor-pointer'>{rate >= 5 ? <FontAwesomeIcon onClick={() => setRate(5)} onMouseEnter={() => setRateHover(5)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onClick={() => setRate(5)} icon={faStar} className='text-gray-600' />}</li>
+                </ul>
+
+                <ul onMouseLeave={() => setRateHover(0)} className='flex text-xl mb-3 w-36 max-lg:hidden'>
                   <li className='cursor-pointer'>{rate >= 1 ? <FontAwesomeIcon onClick={() => setRate(1)} onMouseEnter={() => setRateHover(1)} icon={solidStar} className='text-orange-500' /> : (rateHover >= 1 ? <FontAwesomeIcon onClick={() => setRate(1)} onMouseEnter={() => setRateHover(1)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onMouseEnter={() => setRateHover(1)} icon={faStar} className='cursor-pointer text-gray-600' />)}</li>
                   <li className='mx-2 cursor-pointer'>{rate >= 2 ? <FontAwesomeIcon onClick={() => setRate(2)} onMouseEnter={() => setRateHover(2)} icon={solidStar} className='text-orange-500' /> : (rateHover >= 2 ? <FontAwesomeIcon onClick={() => setRate(2)} onMouseEnter={() => setRateHover(2)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onMouseEnter={() => setRateHover(2)} className='text-gray-600' icon={faStar} />)}</li>
                   <li className='cursor-pointer'>{rate >= 3 ? <FontAwesomeIcon onClick={() => setRate(3)} onMouseEnter={() => setRateHover(3)} icon={solidStar} className='text-orange-500' /> : (rateHover >= 3 ? <FontAwesomeIcon onClick={() => setRate(3)} onMouseEnter={() => setRateHover(3)} icon={solidStar} className='text-orange-500' /> : <FontAwesomeIcon onMouseEnter={() => setRateHover(3)} icon={faStar} className='text-gray-600' />)}</li>
