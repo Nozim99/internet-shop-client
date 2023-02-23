@@ -18,43 +18,55 @@ export default function MyProducts() {
   const [deleteLoad, setDeleteLoad] = useState("")
   const [amount, setAmount] = useState(1)
   const [increaseLoad, setIncreaseLoad] = useState("")
+  const [amountS, setAmountS] = useState<number[]>([])
 
+  const setDataFunc = (serverData: Data[], setFunc: React.Dispatch<React.SetStateAction<Data[] | undefined>>) => {
+    const newData = serverData.slice()
+
+    for (let i = 0; i < newData.length; i++) {
+      let num = 0
+      const obj = newData[i]
+      setAmountS(new Array(newData.length).fill(1))
+
+      if (obj.comments.length) {
+        for (let j = 0; j < obj.comments.length; j++) {
+          num += obj.comments[j].rate
+        }
+      }
+      obj.rate = Number((num / obj.comments.length).toFixed(1)) || 0
+    }
+    setFunc(newData)
+  }
   const deleteGroup = (id: string) => {
     setDeleteLoad(id)
     axios.delete(URLS.start + URLS.deleteGroup + id, { headers: { Authorization: `Bearer ${token}` } })
       .then(result => {
         setDeleteLoad("")
-        setData(result.data)
+        setDataFunc(result.data, setData)
       }).catch(error => {
         setDeleteLoad("")
         Toast.error("Guruh o'chirilmadi")
         console.error(error)
       })
   }
-  const increaseAmount = (id: string) => {
+  const increaseAmount = (id: string, index: number) => {
     setIncreaseLoad(id)
-    axios.post(URLS.start + URLS.increaseAmountOfProduct, { amount, groupId: id }, { headers: { Authorization: `Bearer ${token}` } })
-      .then(result => { setData(result.data); setIncreaseLoad("") })
+    axios.post(URLS.start + URLS.increaseAmountOfProduct, { amount: amountS[index], groupId: id }, { headers: { Authorization: `Bearer ${token}` } })
+      .then(result => { setDataFunc(result.data, setData); setIncreaseLoad("") })
       .catch(error => { console.error(error); setIncreaseLoad("") })
+  }
+  const changeAmount = (num: number, index: number) => {
+    if (num >= 1) {
+      const newAmount = [...amountS]
+      newAmount[index] = num
+      setAmountS(newAmount)
+    }
   }
 
   useEffect(() => {
     axios.get(URLS.start + URLS.getMyProducts, { headers: { Authorization: `Bearer ${token}` } })
       .then(result => {
-        const newData: Data[] = result.data.slice()
-
-        for (let i = 0; i < newData.length; i++) {
-          let num = 0
-          const obj = newData[i]
-          if (obj.comments.length) {
-            for (let j = 0; j < obj.comments.length; j++) {
-              num += obj.comments[j].rate
-            }
-          }
-          obj.rate = Number((num / obj.comments.length).toFixed(1)) || 0
-        }
-
-        setData(newData)
+        setDataFunc(result.data, setData)
       })
   }, [])
 
@@ -81,8 +93,8 @@ export default function MyProducts() {
                       <div className='flex justify-between mt-3 max-md:text-sm max-md:items-center'>
                         <div className='flex items-center'>
                           <span className='mr-2 max-md:mr-0 max-md:w-20'>Mahsulot qo'shish</span>
-                          <input onChange={(e) => setAmount(Number(e.target.value))} value={amount} min={1} type="number" className='w-20 outline-none px-2 text-lg border border-gray-400 font-bold' /> <span className='border border-gray-400 border-l-0 text-lg px-1.5'>ta</span>
-                          <button onClick={() => increaseAmount(item._id)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad === item._id ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
+                          <input onChange={(e) => changeAmount(Number(e.target.value), index)} value={amountS[index]} min={1} type="number" className='w-20 outline-none px-2 text-lg border border-gray-400 font-bold' /> <span className='border border-gray-400 border-l-0 text-lg px-1.5'>ta</span>
+                          <button onClick={() => increaseAmount(item._id, index)} className={'px-3 rounded py-0.5 text-white ml-8 hover:bg-green-600 max-md:px-1 ' + (increaseLoad === item._id ? "pointer-events-none bg-green-700" : "bg-green-500")}>Mahsulot qo'shish {increaseLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
                           <button onClick={() => deleteGroup(item._id)} className={'px-3 ml-5 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 hidden max-sm:inline-block ' + (deleteLoad === item._id ? "bg-red-700 pointer-events-none" : "bg-red-500")}><FontAwesomeIcon icon={faTrash} /> {deleteLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
                         </div>
                         <button onClick={() => deleteGroup(item._id)} className={'px-3 rounded py-0.5 text-white hover:bg-red-600 max-md:px-1 max-sm:hidden ' + (deleteLoad === item._id ? "bg-red-700 pointer-events-none" : "bg-red-500")}>Mahsulotni o'chirish {deleteLoad === item._id ? <FontAwesomeIcon className='circle_animate' icon={faSpinner} /> : ""}</button>
