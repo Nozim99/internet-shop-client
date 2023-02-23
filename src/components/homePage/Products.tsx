@@ -100,7 +100,7 @@ export default function Products() {
   }, [category])
 
   if (!data) {
-    return <div className='relative w-full'>
+    return <div style={{ minHeight: "calc(100vh - 13.6rem)" }} className='relative w-full'>
       <Loader />
     </div>
   }
