@@ -259,11 +259,11 @@ export default function Product() {
             }
           </div>
           <div className='mt-4 flex items-center'>
-            {data.rate > 0 ? (data.rate < 0.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
-            {data.rate > 1 ? (data.rate < 1.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
-            {data.rate > 2 ? (data.rate < 2.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
-            {data.rate > 3 ? (data.rate < 3.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
-            {data.rate > 4 ? (data.rate < 4.5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 0 ? (data.rate < 1 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 1 ? (data.rate < 2 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 2 ? (data.rate < 3 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 3 ? (data.rate < 4 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
+            {data.rate > 4 ? (data.rate < 5 ? <FontAwesomeIcon className='text-amber-500 text-xl mx-1' icon={faStarHalfStroke} /> : <FontAwesomeIcon className='text-amber-500 text-xl' icon={solidStar} />) : <FontAwesomeIcon className='text-gray-700 text-xl' icon={faStar} />}
             <div className='ml-1 flex items-center'><span className='text-lg font-medium'>{data.rate}</span></div>
           </div>
           <div className='flex mt-3'>
